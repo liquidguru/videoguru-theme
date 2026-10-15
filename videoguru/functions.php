@@ -10,6 +10,7 @@ require get_theme_file_path('inc/video.php');
 require get_theme_file_path('inc/customizer.php');
 require get_theme_file_path('inc/wall.php');
 require get_theme_file_path('inc/seo.php');
+if (is_admin() || (defined('WP_CLI') && WP_CLI)) require get_theme_file_path('inc/importer.php'); // Appearance → Import videos
 
 add_action('after_setup_theme', function () {
     load_theme_textdomain('videoguru', get_template_directory() . '/languages');

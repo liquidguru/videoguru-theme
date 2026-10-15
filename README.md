@@ -4,7 +4,7 @@ A fast, simple **video wall** theme for WordPress, for people with lots of video
 
 Born from [liquidguru.com](https://www.liquidguru.com/), a site of 138 short macro videos.
 
-**Status: 0.1.0, first working version, not released yet.**
+**Status: 0.2.0 (private repo; not publicly released yet).** The Vimeo-API and YouTube-API-key import paths are covered by tests against mocked responses but have not yet been tried with a real token or key.
 
 ## How it works
 
@@ -13,6 +13,8 @@ Born from [liquidguru.com](https://www.liquidguru.com/), a site of 138 short mac
 - **Filter chips** are your top-level categories, with counts. **Search** matches titles, categories and tags, instantly. **Random video** picks one from what's showing.
 - **Hover previews** play a muted, looping clip when the mouse rests on a thumbnail (mouse only; off for touch, reduced motion and Data Saver).
 - **Customizer** (Appearance → Customize): colour theme (six presets or your own two colours), logo and tagline (Site Identity), thumbnail size, order (newest, oldest or random on every visit), intro text, footer text, social links, and switches for search, Random, hover previews and durations.
+- **Import** (Appearance → Import videos): paste a list of links, or point it at a YouTube channel/@handle/playlist or a Vimeo channel/group/showcase/folder/account, tick the videos you want and it makes one post each (link, description, original date, optional category, published or draft). Existing videos are skipped, so it is safe to run again. YouTube works without a key for the newest 15 videos (a free API key lists all); Vimeo needs a free personal access token. Keys are stored in the site's settings.
+- **Analytics** (Customize → Analytics): paste a Google Analytics, Plausible, Cloudflare or Matomo snippet; skipped for logged-in administrators by default. Consent is the site owner's responsibility.
 - **SEO basics built in**: meta description, canonical, social cards and `VideoObject` structured data (skipped automatically if Yoast, Rank Math, SEOPress or AIOSEO is active).
 
 ## Install
@@ -29,7 +31,7 @@ Requires WordPress 6.0+ and PHP 7.4+.
 | Path | What |
 |---|---|
 | `videoguru/` | the theme (this folder is what gets zipped) |
-| `videoguru/inc/` | `video.php` (finding the video, posters, durations), `wall.php` (queries, cards, related), `customizer.php` (options and colour maths), `seo.php` |
+| `videoguru/inc/` | `video.php` (finding the video, posters, durations), `wall.php` (queries, cards, related), `customizer.php` (options and colour maths), `seo.php`, `importer.php` (Import videos admin page; delete it plus its `require` for a WordPress.org build) |
 | `tools/package.py` | builds `dist/videoguru.zip` |
 | `tools/make_screenshot.py` | regenerates `videoguru/screenshot.jpg` from a folder of posters |
 | `tools/wpt.sh` | WP-CLI against the local test site |

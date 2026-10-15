@@ -3,7 +3,7 @@ Contributors: liquidguru
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: blog, entertainment, grid-layout, custom-colors, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, accessibility-ready
@@ -20,6 +20,8 @@ VideoGuru turns your posts into a contact sheet of large video thumbnails: filte
 * Muted, looping hover previews for Vimeo and YouTube (mouse only; off for touch, reduced motion and Data Saver).
 * Six colour themes (Midnight, Deep ocean, Charcoal, Forest, Plum, Paper) or your own two colours. Logo and tagline from Site Identity.
 * Choose thumbnail size, newest/oldest/random order on the home page, intro text, footer text and social links.
+* Import from a channel: Appearance → Import videos turns pasted links, a YouTube channel or playlist, or a Vimeo channel, group, showcase, folder or account into one post per video (existing videos are skipped).
+* An Analytics box in the Customizer for a Google Analytics, Plausible, Cloudflare or Matomo snippet.
 * Light and quick: no jQuery, one small script, self-hosted font.
 * Basic SEO built in (description, canonical, social cards, VideoObject data); it steps aside when Yoast, Rank Math, SEOPress or AIOSEO is active.
 
@@ -31,6 +33,9 @@ VideoGuru turns your posts into a contact sheet of large video thumbnails: filte
 4. Appearance → Customize to set colours, logo, tagline and the wall options. Appearance → Menus to add header links.
 
 == Frequently Asked Questions ==
+
+= How do I bring in a whole channel? =
+Appearance → Import videos. "Paste links" needs nothing. "YouTube" works with a channel, @handle or playlist address; without a free API key YouTube only shares the newest 15 videos, with a key you get them all. "Vimeo" needs a free personal access token (developer.vimeo.com → create an app → generate a token) and accepts channel, group, showcase, folder and account addresses. Keys and tokens are stored in the site's settings and only administrators can see the page. You can import as drafts to review first.
 
 = How do I add a video? =
 Add a post and paste the Vimeo or YouTube link on its own line, or use the Embed block. The title is the video's title on the wall.
@@ -51,6 +56,11 @@ VideoGuru, (C) 2026 Kaj Maney, is distributed under the terms of the GNU GPL v2 
 Open Sans, (C) Steve Matteson / Google, is licensed under the SIL Open Font License 1.1 (https://openfontlicense.org).
 
 == Changelog ==
+
+= 0.2.0 =
+* New: Appearance → Import videos (pasted links, YouTube channel/playlist, Vimeo channel/group/showcase/folder/account).
+* New: Customizer → Analytics, a box for a tracking snippet (skips logged-in administrators by default).
+* Fix: on paginated home pages the category chips are now links.
 
 = 0.1.0 =
 * First version.
