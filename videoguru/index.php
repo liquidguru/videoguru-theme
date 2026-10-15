@@ -23,6 +23,10 @@ $total = (int) $GLOBALS['wp_query']->found_posts;
       <?php foreach ($counts as $slug => $n) : ?>
         <button class="chip" type="button" data-g="<?php echo esc_attr($slug); ?>" aria-pressed="false"><?php echo esc_html($names[$slug]); ?><small><?php echo (int) $n; ?></small></button>
       <?php endforeach; ?>
+    <?php elseif ($is_home && !$all) : // too many videos for one page: the chips become links to category pages ?>
+      <?php foreach (get_categories(['parent' => 0, 'hide_empty' => true, 'exclude' => [(int) get_option('default_category')], 'orderby' => 'count', 'order' => 'DESC']) as $c) : ?>
+        <a class="chip" href="<?php echo esc_url(get_category_link($c)); ?>"><?php echo esc_html($c->name); ?><small><?php echo (int) $c->count; ?></small></a>
+      <?php endforeach; ?>
     <?php elseif (!$is_home) : ?>
       <a class="chip" href="<?php echo esc_url(home_url('/')); ?>">← <?php esc_html_e('All videos', 'videoguru'); ?></a>
       <?php foreach ($children as $c) : ?>

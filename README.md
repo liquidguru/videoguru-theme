@@ -31,6 +31,7 @@ Requires WordPress 6.0+ and PHP 7.4+.
 | `videoguru/` | the theme (this folder is what gets zipped) |
 | `videoguru/inc/` | `video.php` (finding the video, posters, durations), `wall.php` (queries, cards, related), `customizer.php` (options and colour maths), `seo.php` |
 | `tools/package.py` | builds `dist/videoguru.zip` |
+| `tools/make_screenshot.py` | regenerates `videoguru/screenshot.jpg` from a folder of posters |
 | `tools/wpt.sh` | WP-CLI against the local test site |
 | `_test/` | git-ignored local test site (WordPress copy on `php -S` at http://localhost:7430, seeded by `_test/seed.php`) |
 
