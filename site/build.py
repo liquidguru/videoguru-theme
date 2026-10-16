@@ -46,8 +46,21 @@ html_path = os.path.join(DIST, 'index.html')
 html = open(html_path, encoding='utf-8').read().replace('{{VERSION}}', version).replace('{{SIZE}}', size_label)
 open(html_path, 'w', encoding='utf-8').write(html)
 
+import datetime
+
+today = datetime.date.today().isoformat()
 with open(os.path.join(DIST, 'robots.txt'), 'w') as f:
-    f.write('User-agent: *\nAllow: /\n')
+    f.write('User-agent: *\nAllow: /\n\nSitemap: https://videoguru.liquid.guru/sitemap.xml\n')
+with open(os.path.join(DIST, 'sitemap.xml'), 'w') as f:
+    f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            f'  <url><loc>https://videoguru.liquid.guru/</loc><lastmod>{today}</lastmod></url>\n</urlset>\n')
+
+# Home-screen icon for iPhones/iPads (180x180): the accent tile with the play triangle, same as the favicon
+from PIL import ImageDraw
+
+icon = Image.new('RGB', (180, 180), (92, 200, 224))
+ImageDraw.Draw(icon).polygon([(67, 53), (67, 127), (130, 90)], fill=(6, 16, 26))
+icon.save(os.path.join(DIST, 'apple-touch-icon.png'), optimize=True)
 
 left = re.findall(r'\{\{[A-Z]+\}\}', html)
 print('built site/dist: version', version, size_label, '| unfilled placeholders:', left or 'none')
