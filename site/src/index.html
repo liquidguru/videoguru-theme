@@ -138,5 +138,26 @@
     <p class="fine">Vimeo and YouTube are trademarks of their owners. VideoGuru is not affiliated with or endorsed by either.</p>
   </div>
 </footer>
+<button type="button" id="to-top" class="to-top" aria-label="Back to top" hidden>
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M12 19V6M6 12l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<script>
+(function () {
+  var btn = document.getElementById('to-top');
+  if (!btn) return;
+  var shown = false, ticking = false;
+  function update() {
+    var want = window.scrollY > 700;
+    if (want !== shown) { shown = want; btn.hidden = false; btn.classList.toggle('show', want); }
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  btn.addEventListener('click', function () {
+    var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: calm ? 'auto' : 'smooth' });
+  });
+  update();
+})();
+</script>
 </body>
 </html>

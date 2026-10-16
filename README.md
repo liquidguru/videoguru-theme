@@ -33,6 +33,7 @@ Requires WordPress 6.0+ and PHP 7.4+.
 |---|---|
 | `videoguru/` | the theme (this folder is what gets zipped) |
 | `videoguru/inc/` | `video.php` (finding the video, posters, durations), `wall.php` (queries, cards, related), `customizer.php` (options and colour maths), `seo.php`, `importer.php` (Import videos admin page; delete it plus its `require` for a WordPress.org build) |
+| `site/` | the download website, live at **https://videoguru.liquid.guru** (single static page): `src/` (page, CSS, screenshots, fonts), `build.py` (fills in version and zip size, adds the download zip and social image, writes `site/dist`), `shoot.py` (regenerates the screenshots from the test site with headless Chrome), `wrangler.toml` (Cloudflare Worker with static assets; deploy from `site/` with `npx.cmd wrangler deploy` after `python tools/package.py` and `python site/build.py`) |
 | `tools/package.py` | builds `dist/videoguru.zip` |
 | `tools/make_screenshot.py` | regenerates `videoguru/screenshot.jpg` from a folder of posters |
 | `tools/wpt.sh` | WP-CLI against the local test site |

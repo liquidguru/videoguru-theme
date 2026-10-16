@@ -95,10 +95,16 @@ details p{margin:0;padding:0 20px 18px}
 .foot p{margin:0 0 8px}
 .foot a{color:var(--body)}
 
+/* back to top */
+.to-top{position:fixed;right:22px;bottom:22px;z-index:25;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 92%,transparent);color:var(--text);cursor:pointer;opacity:0;transform:translateY(8px);pointer-events:none;transition:opacity .25s,transform .25s,border-color .2s,color .2s;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);box-shadow:0 4px 18px rgba(0,0,0,.45)}
+.to-top.show{opacity:1;transform:none;pointer-events:auto}
+.to-top:hover{border-color:var(--accent);color:var(--accent)}
+
 @media (max-width:760px){
+  .to-top{right:14px;bottom:14px}
   .top nav a:not(.btn){display:none}
   .hero{padding-top:44px}
   .sec{padding:60px 0}
   .two{grid-template-columns:1fr}
 }
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.themes a{transition:none}.btn:hover,.themes a:hover{transform:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.themes a,.to-top{transition:none}.btn:hover,.themes a:hover{transform:none}}
