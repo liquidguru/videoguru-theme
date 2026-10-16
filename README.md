@@ -4,7 +4,7 @@ A fast, simple **video wall** theme for WordPress, for people with lots of video
 
 Born from [liquidguru.com](https://www.liquidguru.com/), a site of 138 short macro videos.
 
-**Status: 0.2.0 (private repo; not publicly released yet).** The Vimeo-API and YouTube-API-key import paths are covered by tests against mocked responses but have not yet been tried with a real token or key.
+**Status: 0.3.0 (private repo; not publicly released yet).** All import routes (pasted links, YouTube with and without an API key, Vimeo with an access token) have been tried against real accounts.
 
 ## How it works
 
