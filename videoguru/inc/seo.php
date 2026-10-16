@@ -26,7 +26,7 @@ function vg_plain_excerpt($post = null, int $len = 155): string {
 }
 
 function vg_meta_description(): string {
-    if (is_singular('post')) return vg_plain_excerpt() ?: wp_strip_all_tags(get_the_title()) . ' – ' . get_bloginfo('name');
+    if (is_singular('post')) return vg_plain_excerpt() ?: vg_title_line() . ' – ' . get_bloginfo('name');
     if (is_front_page() || is_home()) {
         return trim((string) vg_mod('home_description')) ?: trim(wp_strip_all_tags((string) vg_mod('home_intro'))) ?: get_bloginfo('description');
     }
@@ -78,7 +78,7 @@ add_action('wp_head', function () {
     $data = [
         '@context' => 'https://schema.org',
         '@type' => 'VideoObject',
-        'name' => wp_strip_all_tags(get_the_title()),
+        'name' => html_entity_decode(vg_title_line(), ENT_QUOTES, 'UTF-8'),
         'description' => vg_meta_description(),
         'thumbnailUrl' => [$thumb],
         'uploadDate' => get_the_date('c'),

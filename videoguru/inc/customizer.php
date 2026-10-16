@@ -21,7 +21,7 @@ function vg_defaults(): array {
     return [
         'preset' => 'midnight', 'bg' => '#040316', 'accent' => '#5cc8e0',
         'card_size' => 'medium', 'per_page' => 200, 'home_order' => 'newest',
-        'only_videos' => true, 'show_sort' => true, 'hover_preview' => true, 'show_random' => true, 'show_search' => true, 'show_duration' => true, 'show_tagline' => true,
+        'chip_level' => 1, 'hide_cats' => '', 'only_videos' => true, 'show_sort' => true, 'hover_preview' => true, 'show_random' => true, 'show_search' => true, 'show_duration' => true, 'show_tagline' => true,
         'random_label' => '', 'search_placeholder' => '',
         'home_intro' => '', 'home_description' => '', 'footer_text' => '', 'show_rss' => true,
         'tracking_code' => '', 'skip_admin_tracking' => true,
@@ -121,6 +121,11 @@ add_action('customize_register', function (WP_Customize_Manager $wp) {
     $add('home_order', 'vg_wall', __('Order on the home page', 'videoguru'), 'select', fn($v) => in_array($v, ['newest', 'oldest', 'title_asc', 'title_desc', 'random'], true) ? $v : 'newest',
         ['choices' => ['newest' => __('Newest first', 'videoguru'), 'oldest' => __('Oldest first', 'videoguru'), 'title_asc' => __('Title A–Z', 'videoguru'),
             'title_desc' => __('Title Z–A', 'videoguru'), 'random' => __('Random on every visit', 'videoguru')]]);
+    $add('chip_level', 'vg_wall', __('Filter chips are made from', 'videoguru'), 'select', fn($v) => in_array((int) $v, [1, 2, 3], true) ? (int) $v : 1,
+        ['choices' => [1 => __('Top-level categories', 'videoguru'), 2 => __('Second-level categories (children of the top level)', 'videoguru'), 3 => __('Third-level categories', 'videoguru')],
+         'description' => __('Pick the level where your real groups sit, e.g. Fish / Crustaceans / Cephalopods.', 'videoguru')]);
+    $add('hide_cats', 'vg_wall', __('Hide these categories (slugs, separated by commas)', 'videoguru'), 'text', 'sanitize_text_field',
+        ['description' => __('Left out of the filter chips and the category tags on video pages, e.g. archive, featured, all-videos.', 'videoguru'), 'input_attrs' => ['placeholder' => 'archive, featured']]);
     $add('show_sort', 'vg_wall', __('Show a Sort menu so visitors can reorder the wall', 'videoguru'), 'checkbox', $bool);
     $add('per_page', 'vg_wall', __('Videos per page', 'videoguru'), 'number', fn($v) => max(12, min(1000, (int) $v)), ['input_attrs' => ['min' => 12, 'max' => 1000],
         'description' => __('Up to this many videos load on one screen, with instant filtering and search. More than this and the wall pages, and search goes to the server.', 'videoguru')]);

@@ -3,7 +3,7 @@ Contributors: liquidguru
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.3.0
+Stable tag: 0.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: blog, entertainment, grid-layout, custom-colors, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, accessibility-ready
@@ -57,6 +57,12 @@ VideoGuru, (C) 2026 Kaj Maney, is distributed under the terms of the GNU GPL v2 
 Open Sans, (C) Steve Matteson / Google, is licensed under the SIL Open Font License 1.1 (https://openfontlicense.org).
 
 == Changelog ==
+
+= 0.4.0 =
+* New: choose which category level the filter chips come from (top level, second level or third level), for sites whose real groups sit under a parent such as "Archive".
+* New: hide housekeeping categories (by slug) from the chips and from video pages.
+* New: a title written with a line break ("Common name<br>Latin name") shows its second part as a subtitle, on cards and video pages; other markup in titles is dropped instead of showing as text. Search finds both parts.
+* Tested with a real 138-video library (home page about half a second, every filter, search, sort and hover preview working).
 
 = 0.3.0 =
 * New: a Sort menu on the home page so visitors can choose Newest, Oldest, A–Z, Z–A or Random (Customize → Video wall switches it off).

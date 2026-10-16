@@ -36,23 +36,41 @@ add_action('template_redirect', function () {
     exit;
 });
 
-/** The categories a video is filed under, ignoring the default "Uncategorized". [id => WP_Term] */
+/** Category slugs the owner chose to hide from chips and video pages (Customizer → Video wall). */
+function vg_hidden_cats(): array {
+    static $h = null;
+    if ($h === null) $h = array_filter(array_map('sanitize_title', preg_split('~[\s,]+~', (string) vg_mod('hide_cats'))));
+    return $h;
+}
+
+/** The categories a video is filed under, ignoring "Uncategorized" and any the owner hid. [id => WP_Term] */
 function vg_cats(int $post_id): array {
     $default = (int) get_option('default_category');
+    $hide = vg_hidden_cats();
     $out = [];
-    foreach (get_the_category($post_id) as $t) if ((int) $t->term_id !== $default) $out[$t->term_id] = $t;
+    foreach (get_the_category($post_id) as $t) if ((int) $t->term_id !== $default && !in_array($t->slug, $hide, true)) $out[$t->term_id] = $t;
     return $out;
 }
 
-/** Top-level categories for filter chips: [slug => name] for a video. */
+/**
+ * The category each filter chip stands for, for one video: [slug => name].
+ * Chip level 1 = top-level categories, 2 = their children, 3 = the next level down. A video in a shallower
+ * category than the chosen level is left out of the chips (it still shows under "All").
+ */
 function vg_groups(int $post_id): array {
     static $cache = [];
     if (isset($cache[$post_id])) return $cache[$post_id];
+    $level = max(1, min(3, (int) vg_mod('chip_level')));
+    $hide = vg_hidden_cats();
+    $default = (int) get_option('default_category');
     $out = [];
-    foreach (vg_cats($post_id) as $t) {
-        $top = $t;
-        while ($top->parent) { $p = get_term($top->parent, 'category'); if (!$p || is_wp_error($p)) break; $top = $p; }
-        $out[$top->slug] = $top->name;
+    foreach (get_the_category($post_id) as $t) {
+        if ((int) $t->term_id === $default) continue;
+        $chain = array_reverse(get_ancestors($t->term_id, 'category'));   // root … parent
+        $chain[] = $t->term_id;
+        if (count($chain) < $level) continue;
+        $node = get_term($chain[$level - 1], 'category');
+        if ($node && !is_wp_error($node) && !in_array($node->slug, $hide, true)) $out[$node->slug] = $node->name;
     }
     return $cache[$post_id] = $out;
 }
@@ -78,19 +96,19 @@ function vg_card($post = null): void {
     $first = !is_singular() && $n++ < 4; // above-the-fold posters load now, the rest lazily
     $post = get_post($post);
     $v = vg_video_info($post);
-    $title = get_the_title($post);
+    [$title, $sub] = vg_title_parts($post);
     $groups = vg_groups($post->ID);
     $terms = array_merge(wp_list_pluck(vg_cats($post->ID), 'name'), wp_get_post_tags($post->ID, ['fields' => 'names']));
-    $search = strtolower(wp_strip_all_tags($title . ' ' . implode(' ', $terms)));
+    $search = strtolower(html_entity_decode($title . ' ' . $sub . ' ' . implode(' ', $terms), ENT_QUOTES, 'UTF-8'));
     $dur = vg_mod('show_duration') ? vg_fmt_duration(vg_duration($post)) : '';
     $attrs = ' data-groups="' . esc_attr(implode(' ', array_keys($groups))) . '" data-search="' . esc_attr($search) . '"'
-        . ' data-date="' . (int) get_post_time('U', true, $post) . '" data-title="' . esc_attr(strtolower(wp_strip_all_tags($title))) . '"';
+        . ' data-date="' . (int) get_post_time('U', true, $post) . '" data-title="' . esc_attr(strtolower(html_entity_decode($title, ENT_QUOTES, 'UTF-8'))) . '"';
     if ($v['provider'] === 'vimeo') $attrs .= ' data-vimeo="' . esc_attr($v['id']) . '"' . ($v['hash'] ? ' data-h="' . esc_attr($v['hash']) . '"' : '');
     if ($v['provider'] === 'youtube') $attrs .= ' data-youtube="' . esc_attr($v['id']) . '"';
     ?>
     <a class="card" href="<?php echo esc_url(get_permalink($post)); ?>"<?php echo $attrs; // escaped above ?>>
         <?php
-        $alt = wp_strip_all_tags($title);
+        $alt = $title . ($sub !== '' ? ' (' . $sub . ')' : '');
         $load = ['loading' => $first ? 'eager' : 'lazy', 'fetchpriority' => $first ? 'high' : 'auto', 'alt' => $alt, 'sizes' => '(min-width: 1000px) 25vw, (min-width: 600px) 33vw, 100vw'];
         if (has_post_thumbnail($post)) {
             echo get_the_post_thumbnail($post, 'vg-card', $load);
@@ -99,7 +117,7 @@ function vg_card($post = null): void {
         }
         if ($dur) echo '<span class="dur">' . esc_html($dur) . '</span>';
         ?>
-        <span class="meta"><span class="name"><?php echo esc_html($title); ?></span></span>
+        <span class="meta"><span class="name"><?php echo esc_html($title); ?></span><?php if ($sub !== '') echo '<em class="sub">' . esc_html($sub) . '</em>'; ?></span>
     </a>
     <?php
 }

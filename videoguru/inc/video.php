@@ -37,6 +37,28 @@ function vg_video_info($post = null): array {
     return $cache[$key] = $info;
 }
 
+/**
+ * [main title, subtitle]. A title written with a line break ("Common name<br>Latin name") shows the second part as a
+ * subtitle; any other tags are dropped, so markup in a title never shows up as text.
+ */
+function vg_title_parts($post = null): array {
+    $parts = array_values(array_filter(array_map(function ($p) {
+        return trim(wp_strip_all_tags($p));
+    }, preg_split('~<br\s*/?>~i', (string) get_the_title($post))), function ($p) { return $p !== ''; }));
+    return [$parts[0] ?? '', isset($parts[1]) ? implode(' – ', array_slice($parts, 1)) : ''];
+}
+
+/** The whole title on one line, for page titles, alt text and structured data. */
+function vg_title_line($post = null): string {
+    [$name, $sub] = vg_title_parts($post);
+    return $sub !== '' ? $name . ' – ' . $sub : $name;
+}
+
+add_filter('document_title_parts', function ($p) {
+    if (is_singular('post')) $p['title'] = html_entity_decode(vg_title_line(), ENT_QUOTES, 'UTF-8');
+    return $p;
+});
+
 /** Remove the main video's own embed from the body text (the theme draws the player itself, above the title). */
 function vg_strip_main_video(string $c, array $v): string {
     if (!$v['id']) return $c;

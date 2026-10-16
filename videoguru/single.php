@@ -5,6 +5,7 @@
 get_header();
 get_template_part('template-parts/bar');
 while (have_posts()) : the_post();
+    [$name, $sub] = vg_title_parts();
     $v = vg_video_info();
     $src = vg_player_src($v);
     $dur = vg_fmt_duration(vg_duration());
@@ -15,10 +16,11 @@ while (have_posts()) : the_post();
     ?>
 <main id="main" class="watch">
   <?php if ($src) : ?>
-    <div class="player"><iframe src="<?php echo esc_url($src); ?>" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen title="<?php echo esc_attr(get_the_title()); ?>"></iframe></div>
+    <div class="player"><iframe src="<?php echo esc_url($src); ?>" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen title="<?php echo esc_attr($name); ?>"></iframe></div>
   <?php endif; ?>
 
-  <h1><?php the_title(); ?></h1>
+  <h1><?php echo esc_html($name); ?></h1>
+  <?php if ($sub !== '') : ?><p class="sub"><?php echo esc_html($sub); ?></p><?php endif; ?>
 
   <ul class="facts">
     <li><?php echo esc_html(get_the_date()); ?></li>
@@ -37,8 +39,8 @@ while (have_posts()) : the_post();
   <?php if (comments_open() || get_comments_number()) comments_template(); ?>
 
   <nav class="pn" aria-label="<?php esc_attr_e('Older and newer videos', 'videoguru'); ?>">
-    <span><?php if ($prev) : ?><a href="<?php echo esc_url(get_permalink($prev)); ?>" rel="prev">← <?php echo esc_html(get_the_title($prev)); ?></a><?php endif; ?></span>
-    <span><?php if ($next) : ?><a href="<?php echo esc_url(get_permalink($next)); ?>" rel="next"><?php echo esc_html(get_the_title($next)); ?> →</a><?php endif; ?></span>
+    <span><?php if ($prev) : ?><a href="<?php echo esc_url(get_permalink($prev)); ?>" rel="prev">← <?php echo esc_html(vg_title_parts($prev)[0]); ?></a><?php endif; ?></span>
+    <span><?php if ($next) : ?><a href="<?php echo esc_url(get_permalink($next)); ?>" rel="next"><?php echo esc_html(vg_title_parts($next)[0]); ?> →</a><?php endif; ?></span>
   </nav>
 </main>
 <?php endwhile;
