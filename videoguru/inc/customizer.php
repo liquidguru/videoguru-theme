@@ -17,11 +17,25 @@ function videoguru_presets(): array {
     ];
 }
 
+/** Thumbnail shapes: slug => label. */
+function videoguru_shapes(): array {
+    return [
+        'rounded' => __('Rounded corners', 'videoguru'),
+        'soft'    => __('Very rounded corners', 'videoguru'),
+        'sharp'   => __('Square corners', 'videoguru'),
+        'cut'     => __('Cut corners', 'videoguru'),
+        'square'  => __('Square tile', 'videoguru'),
+        'circle'  => __('Circle', 'videoguru'),
+        'oval'    => __('Oval', 'videoguru'),
+        'wavy'    => __('Wavy edges', 'videoguru'),
+    ];
+}
+
 function videoguru_defaults(): array {
     $full = videoguru_is_full();   // the WordPress.org edition keeps every third-party request switched off until the owner opts in
     return apply_filters('videoguru_defaults', [
         'preset' => 'midnight', 'bg' => '#040316', 'accent' => '#5cc8e0',
-        'card_size' => 'medium', 'per_page' => 200, 'home_order' => 'newest',
+        'card_size' => 'medium', 'thumb_shape' => 'rounded', 'per_page' => 200, 'home_order' => 'newest',
         'chip_level' => 1, 'hide_cats' => '', 'only_videos' => true, 'show_sort' => true, 'hover_preview' => $full, 'remote_posters' => $full,
         'show_random' => true, 'show_search' => true, 'show_duration' => true, 'show_tagline' => true,
         'random_label' => '', 'search_placeholder' => '',
@@ -119,6 +133,7 @@ add_action('customize_register', function (WP_Customize_Manager $wp) {
     $wp->add_section('videoguru_wall', ['title' => __('Video wall', 'videoguru'), 'priority' => 35]);
     $add('card_size', 'videoguru_wall', __('Thumbnail size', 'videoguru'), 'select', fn($v) => in_array($v, ['small', 'medium', 'large'], true) ? $v : 'medium',
         ['choices' => ['small' => __('Small', 'videoguru'), 'medium' => __('Medium', 'videoguru'), 'large' => __('Large', 'videoguru')]]);
+    $add('thumb_shape', 'videoguru_wall', __('Thumbnail shape', 'videoguru'), 'select', fn($v) => isset(videoguru_shapes()[$v]) ? $v : 'rounded', ['choices' => videoguru_shapes()]);
     $add('home_order', 'videoguru_wall', __('Order on the home page', 'videoguru'), 'select', fn($v) => in_array($v, ['newest', 'oldest', 'title_asc', 'title_desc', 'random'], true) ? $v : 'newest',
         ['choices' => ['newest' => __('Newest first', 'videoguru'), 'oldest' => __('Oldest first', 'videoguru'), 'title_asc' => __('Title A–Z', 'videoguru'),
             'title_desc' => __('Title Z–A', 'videoguru'), 'random' => __('Random on every visit', 'videoguru')]]);
@@ -155,4 +170,11 @@ add_action('customize_register', function (WP_Customize_Manager $wp) {
         $add('social_' . $k, 'videoguru_footer', $label . ' ' . __('link', 'videoguru'), 'url', 'esc_url_raw');
     }
     $add('show_rss', 'videoguru_footer', __('Show an RSS link', 'videoguru'), 'checkbox', $bool);
+});
+
+// The shape is a class on the page body; the stylesheet does the rest.
+add_filter('body_class', function ($classes) {
+    $shape = videoguru_mod('thumb_shape');
+    $classes[] = 'videoguru-shape-' . (isset(videoguru_shapes()[$shape]) ? $shape : 'rounded');
+    return $classes;
 });

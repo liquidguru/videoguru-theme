@@ -3,7 +3,7 @@ Contributors: liquidguru
 Requires at least: 6.3
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.4.0
+Stable tag: 0.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: blog, entertainment, grid-layout, custom-colors, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
@@ -20,6 +20,7 @@ VideoGuru turns your posts into a contact sheet of large video thumbnails. Visit
 * Instant search of titles, categories and tags.
 * A Sort menu for visitors (newest, oldest, A-Z, Z-A, random), or fix the home page order yourself.
 * Six colour themes (Midnight, Deep ocean, Charcoal, Forest, Plum, Paper) or your own colours. Logo and tagline from Site Identity.
+* Eight thumbnail shapes: rounded, very rounded, square corners, cut corners, square tile, circle, oval, wavy edges.
 * Choose thumbnail size, intro text, footer text and social links in the Customizer.
 * Light and quick: no jQuery, one small script, self-hosted font.
 
@@ -66,6 +67,9 @@ VideoGuru, (C) 2026 Kaj Maney, is distributed under the terms of the GNU GPL v2 
 * All other code, CSS and JavaScript was written for this theme and is licensed GPLv2 or later.
 
 == Changelog ==
+
+= 0.5.0 =
+* New: choose the shape of the video thumbnails in the Customizer: rounded corners, very rounded, square corners, cut corners, square tile, circle, oval or wavy edges.
 
 = 0.4.0 =
 * First version for the WordPress.org directory: a video wall with filter chips, instant search, Sort menu, six colour themes, logo and tagline, optional hover previews.

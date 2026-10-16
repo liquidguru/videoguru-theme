@@ -3,7 +3,7 @@ Contributors: liquidguru
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.4.0
+Stable tag: 0.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: blog, entertainment, grid-layout, custom-colors, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
@@ -20,6 +20,7 @@ VideoGuru turns your posts into a contact sheet of large video thumbnails: filte
 * Muted, looping hover previews for Vimeo and YouTube (mouse only; off for touch, reduced motion and Data Saver).
 * Six colour themes (Midnight, Deep ocean, Charcoal, Forest, Plum, Paper) or your own two colours. Logo and tagline from Site Identity.
 * A Sort menu for visitors (Newest, Oldest, A–Z, Z–A, Random), or set a fixed home page order yourself.
+* Eight thumbnail shapes (rounded, very rounded, square corners, cut corners, square tile, circle, oval, wavy edges).
 * Choose thumbnail size, newest/oldest/A–Z/Z–A/random order on the home page, intro text, footer text and social links.
 * Import from a channel: Appearance → Import videos turns pasted links, a YouTube channel or playlist, or a Vimeo channel, group, showcase, folder or account into one post per video (existing videos are skipped).
 * An Analytics box in the Customizer for a Google Analytics, Plausible, Cloudflare or Matomo snippet.
@@ -57,6 +58,9 @@ VideoGuru, (C) 2026 Kaj Maney, is distributed under the terms of the GNU GPL v2 
 Open Sans, (C) Steve Matteson / Google, is licensed under the SIL Open Font License 1.1 (https://openfontlicense.org).
 
 == Changelog ==
+
+= 0.5.0 =
+* New: choose the shape of the video thumbnails (Customize → Video wall → Thumbnail shape): rounded corners, very rounded, square corners, cut corners, square tile, circle, oval or wavy edges. Hover previews fill every shape.
 
 = 0.4.0 =
 * Internal: functions now use a longer `videoguru_` prefix, template markup moved into `inc/template-tags.php`, search form is a real `searchform.php`, posts and pages use `post_class()` and `wp_link_pages()`, comments get navigation and the reply script.
