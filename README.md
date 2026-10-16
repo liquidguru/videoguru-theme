@@ -32,12 +32,30 @@ Requires WordPress 6.0+ and PHP 7.4+.
 | Path | What |
 |---|---|
 | `videoguru/` | the theme (this folder is what gets zipped) |
-| `videoguru/inc/` | `video.php` (finding the video, posters, durations), `wall.php` (queries, cards, related), `customizer.php` (options and colour maths), `seo.php`, `importer.php` (Import videos admin page; delete it plus its `require` for a WordPress.org build) |
+| `videoguru/inc/` | **core (both editions):** `video.php` (finding the video, titles, player), `wall.php` (queries, cards, related), `template-tags.php` (the markup behind the wall, video page, bars and footer), `customizer.php` (options and colour maths). **full edition only:** `posters.php` (Vimeo posters/lengths via oEmbed, cached, WP-Cron), `seo.php`, `analytics.php`, `importer.php` (Appearance → Import videos) |
 | `site/` | the download website, live at **https://videoguru.liquid.guru** (single static page): `src/` (page, CSS, screenshots, fonts), `build.py` (fills in version and zip size, adds the download zip and social image, writes `site/dist`), `shoot.py` (regenerates the screenshots from the test site with headless Chrome), `wrangler.toml` (Cloudflare Worker with static assets; deploy from `site/` with `npx.cmd wrangler deploy` after `python tools/package.py` and `python site/build.py`) |
-| `tools/package.py` | builds `dist/videoguru.zip` |
+| `tools/package.py` | builds `dist/videoguru.zip` (full) and `dist/videoguru-directory.zip` (WordPress.org edition); `python tools/package.py full` or `directory` for one |
+| `tools/check_directory.py` | unpacks the directory zip and runs PHP_CodeSniffer (WordPress standards, theme text domain/prefix rules, PHP 7.4+ compatibility), reporting what the theme review cares about; needs the one-off Composer install in `_test/phpcs` |
+| `editions/directory/readme.txt` | the WordPress.org edition's `readme.txt` (privacy section, resources, its own changelog); `package.py` swaps it in |
 | `tools/make_screenshot.py` | regenerates `videoguru/screenshot.jpg` from a folder of posters |
 | `tools/wpt.sh` | WP-CLI against the local test site |
 | `_test/` | git-ignored local test site (WordPress copy on `php -S` at http://localhost:7430, seeded by `_test/seed.php`) |
+
+## Two editions
+
+| | Full edition | WordPress.org edition |
+|---|---|---|
+| Where | GitHub, https://videoguru.liquid.guru | the WordPress.org theme directory (submission pending) |
+| Built by | `python tools/package.py full` → `dist/videoguru.zip` | `python tools/package.py directory` → `dist/videoguru-directory.zip` |
+| Import videos page | yes | no (a theme there may not create content) |
+| Vimeo posters and lengths | yes (oEmbed, cached) | no: posters come from featured images |
+| SEO tags and structured data | yes | no (plugin territory) |
+| Analytics snippet box | yes | no (plugin territory) |
+| Remote requests | Vimeo oEmbed; YouTube posters; hover previews (on by default) | **none by itself**. Hover previews and YouTube thumbnails are Customizer options that are **off until the owner switches them on** |
+
+Both are built from the same source: the full edition's extra files (`inc/posters.php`, `inc/seo.php`, `inc/analytics.php`, `inc/importer.php`) are simply left out of the directory zip, and the core falls back gracefully (`videoguru_is_full()` in `functions.php`; the extras plug in through filters such as `videoguru_poster_url` and `videoguru_duration`).
+
+**Submitting to WordPress.org** (needs a WordPress.org account; the `Contributors:` line in `editions/directory/readme.txt` must be that username): run `python tools/package.py directory` and `python tools/check_directory.py` (expect 0 findings), then upload `dist/videoguru-directory.zip` at https://wordpress.org/themes/upload/. The review queue can take weeks. The Theme Check plugin (https://wordpress.org/plugins/theme-check/) reports no required items or warnings for this build.
 
 ## Notes
 

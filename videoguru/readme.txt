@@ -6,7 +6,7 @@ Requires PHP: 7.4
 Stable tag: 0.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Tags: blog, entertainment, grid-layout, custom-colors, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, accessibility-ready
+Tags: blog, entertainment, grid-layout, custom-colors, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
 
 A fast, simple video wall for people with lots of videos. Every post is one Vimeo or YouTube video, shown as a big thumbnail you can filter, search and shuffle.
 
@@ -59,6 +59,9 @@ Open Sans, (C) Steve Matteson / Google, is licensed under the SIL Open Font Lice
 == Changelog ==
 
 = 0.4.0 =
+* Internal: functions now use a longer `videoguru_` prefix, template markup moved into `inc/template-tags.php`, search form is a real `searchform.php`, posts and pages use `post_class()` and `wp_link_pages()`, comments get navigation and the reply script.
+* New: a WordPress.org edition (no importer, SEO tags, analytics box or Vimeo fetching) is built from the same source (see README).
+* A video with no poster shows a play-icon tile instead of an empty card.
 * New: choose which category level the filter chips come from (top level, second level or third level), for sites whose real groups sit under a parent such as "Archive".
 * New: hide housekeeping categories (by slug) from the chips and from video pages.
 * New: a title written with a line break ("Common name<br>Latin name") shows its second part as a subtitle, on cards and video pages; other markup in titles is dropped instead of showing as text. Search finds both parts.

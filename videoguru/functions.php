@@ -4,13 +4,26 @@
  */
 if (!defined('ABSPATH')) exit;
 
-define('VG_VERSION', wp_get_theme()->get('Version'));
+define('VIDEOGURU_VERSION', wp_get_theme()->get('Version'));
+
+/**
+ * The full edition (GitHub / videoguru.liquid.guru) also ships the importer, Vimeo posters, SEO tags and the analytics box.
+ * The WordPress.org edition leaves those files out, and everything below still works without them.
+ */
+function videoguru_is_full(): bool {
+    static $full = null;
+    if ($full === null) $full = file_exists(get_theme_file_path('inc/importer.php'));
+    return $full;
+}
 
 require get_theme_file_path('inc/video.php');
 require get_theme_file_path('inc/customizer.php');
 require get_theme_file_path('inc/wall.php');
-require get_theme_file_path('inc/seo.php');
-if (is_admin() || (defined('WP_CLI') && WP_CLI)) require get_theme_file_path('inc/importer.php'); // Appearance → Import videos
+require get_theme_file_path('inc/template-tags.php');
+foreach (['posters', 'seo', 'analytics'] as $videoguru_part) {
+    if (file_exists(get_theme_file_path('inc/' . $videoguru_part . '.php'))) require get_theme_file_path('inc/' . $videoguru_part . '.php');
+}
+if ((is_admin() || (defined('WP_CLI') && WP_CLI)) && videoguru_is_full()) require get_theme_file_path('inc/importer.php'); // Appearance → Import videos
 
 add_action('after_setup_theme', function () {
     load_theme_textdomain('videoguru', get_template_directory() . '/languages');
@@ -20,17 +33,18 @@ add_action('after_setup_theme', function () {
     add_theme_support('responsive-embeds');
     add_theme_support('html5', ['search-form', 'comment-list', 'comment-form', 'gallery', 'caption', 'style', 'script']);
     add_theme_support('custom-logo', ['height' => 104, 'width' => 400, 'flex-height' => true, 'flex-width' => true, 'unlink-homepage-logo' => true]);
-    add_image_size('vg-card', 640, 360, true);
+    add_image_size('videoguru-card', 640, 360, true);
     register_nav_menus(['primary' => __('Header menu', 'videoguru'), 'footer' => __('Footer menu', 'videoguru')]);
 });
 
 add_action('wp_enqueue_scripts', function () {
-    wp_enqueue_style('videoguru-main', get_theme_file_uri('assets/css/main.css'), [], VG_VERSION . '.' . filemtime(get_theme_file_path('assets/css/main.css')));
-    wp_enqueue_script('videoguru-main', get_theme_file_uri('assets/js/main.js'), [], VG_VERSION . '.' . filemtime(get_theme_file_path('assets/js/main.js')), ['strategy' => 'defer', 'in_footer' => true]);
+    wp_enqueue_style('videoguru-main', get_theme_file_uri('assets/css/main.css'), [], VIDEOGURU_VERSION . '.' . filemtime(get_theme_file_path('assets/css/main.css')));
+    wp_enqueue_script('videoguru-main', get_theme_file_uri('assets/js/main.js'), [], VIDEOGURU_VERSION . '.' . filemtime(get_theme_file_path('assets/js/main.js')), ['strategy' => 'defer', 'in_footer' => true]);
+    if (is_singular() && comments_open() && get_option('thread_comments')) wp_enqueue_script('comment-reply');
 });
 
 add_action('wp_enqueue_scripts', function () {
-    if (!is_singular()) { // the wall is all theme markup; skip WordPress's block styles there
+    if (videoguru_is_full() && !is_singular()) { // the wall is all theme markup; skip WordPress's block styles there
         wp_dequeue_style('wp-block-library');
         wp_dequeue_style('global-styles');
         wp_dequeue_style('classic-theme-styles');
@@ -43,11 +57,13 @@ add_action('wp_head', function () {
     echo '<script>document.documentElement.classList.add("js")</script>' . "\n";
 }, 1);
 
-remove_action('wp_head', 'print_emoji_detection_script', 7);
-remove_action('wp_print_styles', 'print_emoji_styles');
+if (videoguru_is_full()) {
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
+    remove_action('wp_print_styles', 'print_emoji_styles');
+}
 
 /** Header menu items as plain links (no list markup). */
-class VG_Walker extends Walker_Nav_Menu {
+class Videoguru_Walker extends Walker_Nav_Menu {
     function start_el(&$o, $item, $depth = 0, $args = null, $id = 0) {
         $cur = in_array('current-menu-item', $item->classes, true) ? ' aria-current="page"' : '';
         $o .= '<a href="' . esc_url($item->url) . '"' . $cur . '>' . esc_html($item->title) . '</a>';
@@ -71,9 +87,9 @@ add_action('widgets_init', function () {
 });
 
 /** Links for the footer's social row, from the Customizer. */
-function vg_social_links(): array {
+function videoguru_social_links(): array {
     $names = ['youtube' => 'YouTube', 'vimeo' => 'Vimeo', 'instagram' => 'Instagram', 'facebook' => 'Facebook', 'x' => 'X', 'tiktok' => 'TikTok', 'linkedin' => 'LinkedIn'];
     $out = [];
-    foreach ($names as $k => $label) if ($u = vg_mod('social_' . $k)) $out[$label] = $u;
+    foreach ($names as $k => $label) if ($u = videoguru_mod('social_' . $k)) $out[$label] = $u;
     return $out;
 }
