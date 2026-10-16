@@ -76,6 +76,11 @@ code{font-family:ui-monospace,Consolas,monospace;font-size:.92em;background:var(
 .themes a:hover{transform:translateY(-2px);border-color:var(--accent)}
 .themes span{color:var(--text);font-weight:600;font-size:.95rem}
 
+.shapes{display:grid;gap:26px 22px;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));list-style:none;margin:0;padding:0}
+.shapes li{display:flex;flex-direction:column;gap:10px}
+.shapes img{border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.shapes span{color:var(--text);font-weight:600;font-size:.95rem}
+
 .install{counter-reset:s;list-style:none;margin:0;padding:0;display:grid;gap:14px}
 .install li{counter-increment:s;position:relative;padding:16px 18px 16px 62px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
 .install li::before{content:counter(s);position:absolute;left:18px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:var(--accent);color:var(--on-accent);font-weight:800;display:grid;place-items:center}

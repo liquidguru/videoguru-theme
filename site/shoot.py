@@ -4,6 +4,7 @@ Uses headless Chrome Beta and WP-CLI (tools/wpt.sh) to switch colour themes. Out
 """
 import os
 import subprocess
+import sys
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -19,18 +20,34 @@ def wp(*args):
     subprocess.run([GIT_SH, SH, *args], check=True, capture_output=True, env={**os.environ, 'MSYS_NO_PATHCONV': '1'})
 
 
-def shoot(url, name, w, h, scale=1):
+def shoot(url, name, w, h, scale=1, crop=None):
     png = os.path.join(OUT, '_' + name + '.png')
     subprocess.run([CHROME, '--headless=new', '--disable-gpu', '--hide-scrollbars', f'--window-size={w},{h}', f'--force-device-scale-factor={scale}',
                     '--virtual-time-budget=14000', f'--screenshot={png}', url], check=True, capture_output=True)
     im = Image.open(png).convert('RGB')
+    if crop:
+        im = im.crop(crop)
     im.save(os.path.join(OUT, name + '.webp'), quality=82, method=6)
     os.remove(png)
     print(name, im.size, os.path.getsize(os.path.join(OUT, name + '.webp')) // 1024, 'KB')
 
 
+SHAPES = ['rounded', 'soft', 'sharp', 'cut', 'square', 'circle', 'oval', 'wavy']
+
+
+def shoot_shapes():
+    """The thumbnail-shape gallery: the top-left 720x450 of the wall in each shape."""
+    for shape in SHAPES:
+        wp('theme', 'mod', 'set', 'thumb_shape', shape)
+        shoot(BASE + '/', 'shape-' + shape, 1440, 900, crop=(16, 176, 736, 626))
+    wp('theme', 'mod', 'set', 'thumb_shape', 'rounded')
+
+
 os.makedirs(OUT, exist_ok=True)
 wp('option', 'update', 'blogname', 'VideoGuru Demo')
+if sys.argv[1:] == ['shapes']:          # python site/shoot.py shapes   (only the shape gallery)
+    shoot_shapes()
+    sys.exit(0)
 for preset in ['midnight', 'ocean', 'charcoal', 'forest', 'plum', 'paper']:
     wp('theme', 'mod', 'set', 'preset', preset)
     shoot(BASE + '/', 'wall-' + preset, 1440, 900)
@@ -70,3 +87,4 @@ def poster_over_player(name, post_slug):
 poster_over_player('video-page', 'peanut-worm')
 shoot(BASE + '/', 'wall-mobile', 390, 844, 2)
 wp('theme', 'mod', 'set', 'preset', 'midnight')
+shoot_shapes()
