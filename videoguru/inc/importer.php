@@ -94,7 +94,14 @@ function vg_yt_target(string $in) {
         if (preg_match('~"(?:channelId|externalId)":"(UC[A-Za-z0-9_-]{22})"~', $html, $c) || preg_match('~youtube\.com/channel/(UC[A-Za-z0-9_-]{22})~', $html, $c)) return ['channel' => $c[1]];
         return new WP_Error('vg_yt', __('Could not find that channel. Try the address that contains /channel/UC… (open the channel, then About → Share channel → Copy channel ID).', 'videoguru'));
     }
-    return new WP_Error('vg_yt', __('That doesn\'t look like a YouTube channel or playlist address.', 'videoguru'));
+    // A video address from the channel: YouTube's oEmbed says whose channel it is.
+    if (($v = vg_import_parse_url($in)) && $v['provider'] === 'youtube') {
+        $d = vg_import_json('https://www.youtube.com/oembed?format=json&url=' . rawurlencode($v['url']), [], 'YouTube');
+        if (is_array($d) && !empty($d['author_url']) && $d['author_url'] !== $in) return vg_yt_target((string) $d['author_url']);
+    }
+    // A bare channel name such as liquidguru is taken as the @handle.
+    if (preg_match('~^[A-Za-z0-9._-]{3,}$~', $in)) return vg_yt_target('@' . $in);
+    return new WP_Error('vg_yt', __('That doesn\'t look like a YouTube channel or playlist address. Use the channel\'s @handle or /channel/UC… address, a playlist address, or any one of its video addresses.', 'videoguru'));
 }
 
 /** Videos from a channel or playlist. With an API key: everything (up to $max). Without: the newest 15 from the public feed. */
