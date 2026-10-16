@@ -1,3 +1,6 @@
 _test/
 dist/
 *.zip
+site/dist/
+site/node_modules/
+.wrangler/

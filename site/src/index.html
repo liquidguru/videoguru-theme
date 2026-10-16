@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VideoGuru – a free WordPress video wall theme</title>
+<meta name="description" content="VideoGuru is a free WordPress theme that turns your Vimeo and YouTube videos into one big, fast wall: filter, search, sort, hover previews and a Random button. No plugins needed.">
+<link rel="canonical" href="https://videoguru.liquid.guru/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#040316">
+<meta property="og:type" content="website">
+<meta property="og:title" content="VideoGuru – a free WordPress video wall theme">
+<meta property="og:description" content="Turn your Vimeo and YouTube videos into one big, fast wall: filter, search, sort, hover previews and a Random button. Free and open source.">
+<meta property="og:url" content="https://videoguru.liquid.guru/">
+<meta property="og:image" content="https://videoguru.liquid.guru/img/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="fonts/open-sans-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"VideoGuru","applicationCategory":"WebApplication","operatingSystem":"WordPress 6.0+","softwareVersion":"{{VERSION}}","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"license":"https://www.gnu.org/licenses/gpl-2.0.html","author":{"@type":"Person","name":"Kaj Maney","url":"https://www.liquidguru.com/"},"description":"A free WordPress theme that turns Vimeo and YouTube videos into a filterable, searchable video wall."}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="#top" aria-label="VideoGuru home"><svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect width="32" height="32" rx="7" fill="var(--accent)"/><path d="M12 9.5v13l11-6.5z" fill="var(--on-accent)"/></svg>VideoGuru</a>
+  <nav aria-label="Page"><a href="#how">How it works</a><a href="#features">Features</a><a href="#themes">Colours</a><a href="#install">Install</a><a class="btn small" href="#download">Download</a></nav>
+</header>
+
+<main id="main">
+<section class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">Free WordPress theme · Vimeo &amp; YouTube</p>
+    <h1>A video wall for people with lots of videos.</h1>
+    <p class="lead">VideoGuru turns your videos into one big, fast contact sheet. Filter by category, search as you type, preview on hover, sort or shuffle. No plugins needed.</p>
+    <p class="cta"><a class="btn" href="download/videoguru.zip" download>Download v{{VERSION}} <span>{{SIZE}}</span></a><a class="btn ghost" href="#how">See how it works</a></p>
+    <p class="fine">Free and open source · GPL v2 or later · WordPress 6.0+ · PHP 7.4+</p>
+  </div>
+  <div class="wrap shot">
+    <div class="frame"><div class="bar"><i></i><i></i><i></i></div>
+      <img src="img/wall-midnight.webp" width="1440" height="900" alt="The VideoGuru video wall: a grid of large video thumbnails with category filter chips, a sort menu, a Random video button and a search box">
+    </div>
+  </div>
+</section>
+
+<section id="how" class="sec">
+  <div class="wrap">
+    <h2>Three steps, no fuss</h2>
+    <ol class="steps">
+      <li><b>1</b><h3>Add your videos</h3><p>Paste a Vimeo or YouTube link into a post. Or open <em>Appearance → Import videos</em>, point it at a YouTube channel, playlist, or a Vimeo channel, group or showcase, and tick the ones you want.</p></li>
+      <li><b>2</b><h3>Make it yours</h3><p>Pick one of six colour themes or your own colours, add your logo and tagline, and choose the thumbnail size and order in the Customizer.</p></li>
+      <li><b>3</b><h3>Done</h3><p>Your visitors get a fast wall with instant filtering, search, hover previews, a Sort menu and a Random button.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="features" class="sec alt">
+  <div class="wrap">
+    <h2>Everything a video collection needs</h2>
+    <ul class="features">
+      <li><h3>Instant filter chips</h3><p>Built from your own categories, with counts. Choose which category level they come from and hide the housekeeping ones.</p></li>
+      <li><h3>Search as you type</h3><p>Matches titles, categories and tags with no page reload.</p></li>
+      <li><h3>Hover previews</h3><p>Rest the mouse on a thumbnail to play a muted, looping clip. Mouse only, so it stays off for touch screens and reduced-motion settings.</p></li>
+      <li><h3>Sort and shuffle</h3><p>Newest, oldest, A–Z, Z–A or random, for you and for your visitors. A Random button jumps to a surprise.</p></li>
+      <li><h3>Vimeo and YouTube</h3><p>Posters and lengths come from the videos themselves, or use your own featured images.</p></li>
+      <li><h3>Import a whole channel</h3><p>From pasted links, a YouTube channel or playlist, or a Vimeo channel, group, showcase, folder or account. Videos you already have are skipped.</p></li>
+      <li><h3>Your colours, your logo</h3><p>Six colour themes plus custom colours, in dark or light. Your logo and tagline come from Site Identity.</p></li>
+      <li><h3>Fast and light</h3><p>No jQuery, one small script and a self-hosted font. Friendly to page caches.</p></li>
+      <li><h3>Search and analytics basics</h3><p>Descriptions, canonical links, social cards and video structured data (it steps aside if you use an SEO plugin), plus a box for a Google Analytics, Plausible, Cloudflare or Matomo snippet.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap two">
+    <figure>
+      <img loading="lazy" src="img/video-page.webp" width="1440" height="900" alt="A single video page with the player, the title, the date, length and category tags">
+      <figcaption>Each video gets its own page with the player, details and related videos.</figcaption>
+    </figure>
+    <figure class="phone">
+      <img loading="lazy" src="img/wall-mobile.webp" width="780" height="1688" alt="The wall on a phone: scrolling filter chips, a Random button and a search box above a single column of thumbnails">
+      <figcaption>Made for phones too: scrolling filter chips and a single column.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="themes" class="sec alt">
+  <div class="wrap">
+    <h2>Six colour themes, or your own</h2>
+    <p class="sub">Pick one in the Customizer, or choose Custom and set a background and an accent. The text, borders and shadows adjust themselves and stay readable.</p>
+    <ul class="themes">
+      <li><a href="img/wall-midnight.webp"><img loading="lazy" src="img/theme-midnight.webp" width="1440" height="440" alt="Midnight colour theme"></a><span>Midnight</span></li>
+      <li><a href="img/wall-ocean.webp"><img loading="lazy" src="img/theme-ocean.webp" width="1440" height="440" alt="Deep ocean colour theme"></a><span>Deep ocean</span></li>
+      <li><a href="img/wall-charcoal.webp"><img loading="lazy" src="img/theme-charcoal.webp" width="1440" height="440" alt="Charcoal colour theme"></a><span>Charcoal</span></li>
+      <li><a href="img/wall-forest.webp"><img loading="lazy" src="img/theme-forest.webp" width="1440" height="440" alt="Forest colour theme"></a><span>Forest</span></li>
+      <li><a href="img/wall-plum.webp"><img loading="lazy" src="img/theme-plum.webp" width="1440" height="440" alt="Plum colour theme"></a><span>Plum</span></li>
+      <li><a href="img/wall-paper.webp"><img loading="lazy" src="img/theme-paper.webp" width="1440" height="440" alt="Paper, a light colour theme"></a><span>Paper (light)</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="install" class="sec">
+  <div class="wrap narrow">
+    <h2>Install it in a minute</h2>
+    <ol class="install">
+      <li><a href="download/videoguru.zip" download>Download <code>videoguru.zip</code></a> and leave it zipped.</li>
+      <li>In WordPress go to <b>Appearance → Themes → Add New → Upload Theme</b>, choose the zip, then <b>Install</b> and <b>Activate</b>.</li>
+      <li>Go to <b>Settings → Reading</b> and set “Your homepage displays” to <b>Your latest posts</b>.</li>
+      <li>Add posts with a Vimeo or YouTube link in each, or use <b>Appearance → Import videos</b>. Then tune things in <b>Appearance → Customize</b>.</li>
+    </ol>
+    <p class="fine">Each post is one video: the first Vimeo or YouTube link in the post is the video. Posts without one are left off the wall (you can switch that off).</p>
+  </div>
+</section>
+
+<section class="sec alt">
+  <div class="wrap narrow">
+    <h2>Questions</h2>
+    <details><summary>Is it really free?</summary><p>Yes. VideoGuru is free software under the GNU General Public License, version 2 or later. Use it, change it, share it.</p></details>
+    <details><summary>Do I need any plugins?</summary><p>No. Everything is in the theme, including the importer and the analytics box.</p></details>
+    <details><summary>What happens to my existing posts?</summary><p>Any post with a Vimeo or YouTube link in it appears on the wall, old posts included. Nothing is changed or deleted when you switch themes.</p></details>
+    <details><summary>Does it work with page builders or the Site Editor?</summary><p>No. VideoGuru is a classic theme with its own layout, so it doesn't use the Site Editor, and it isn't built for page builders.</p></details>
+    <details><summary>Where can I see it on a real site?</summary><p>The idea began with <a href="https://www.liquidguru.com/">liquidguru.com</a>, a collection of 138 short macro videos. That site runs a close cousin of this theme, with extras that are specific to it.</p></details>
+    <details><summary>Who made it, and is it finished?</summary><p>Kaj Maney, an underwater videographer in Australia, because he couldn't find anything that did this. It is early software ({{VERSION}}) and has been tested on WordPress 7.1 with PHP 8.2. If you hit a problem, please <a href="https://www.liquidguru.com/contact/">get in touch</a>.</p></details>
+  </div>
+</section>
+
+<section id="download" class="sec dl">
+  <div class="wrap narrow">
+    <h2>Get VideoGuru</h2>
+    <p class="lead">Version {{VERSION}} · {{SIZE}} · free</p>
+    <p class="cta"><a class="btn big" href="download/videoguru.zip" download>Download videoguru.zip</a></p>
+    <p class="fine">Requires WordPress 6.0 or newer and PHP 7.4 or newer. Open Sans is bundled under the SIL Open Font License.</p>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>VideoGuru © 2026 Kaj Maney · free software under the <a href="https://www.gnu.org/licenses/gpl-2.0.html">GNU GPL v2 or later</a> · <a href="https://www.liquidguru.com/">liquidguru.com</a></p>
+    <p class="fine">Vimeo and YouTube are trademarks of their owners. VideoGuru is not affiliated with or endorsed by either.</p>
+  </div>
+</footer>
+</body>
+</html>
