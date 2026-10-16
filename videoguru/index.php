@@ -34,6 +34,15 @@ $total = (int) $GLOBALS['wp_query']->found_posts;
       <?php endforeach; ?>
     <?php endif; ?>
   </div>
+  <?php if ($is_home && $all && vg_mod('show_sort') && count($posts) > 1) : $cur = vg_mod('home_order'); ?>
+    <label class="sort"><span class="sr-only"><?php esc_html_e('Sort videos', 'videoguru'); ?></span>
+      <select id="sort" hidden>
+        <?php foreach (['newest' => __('Newest first', 'videoguru'), 'oldest' => __('Oldest first', 'videoguru'), 'title_asc' => __('Title A–Z', 'videoguru'), 'title_desc' => __('Title Z–A', 'videoguru'), 'random' => __('Random', 'videoguru')] as $k => $label) : ?>
+          <option value="<?php echo esc_attr($k); ?>"<?php selected($cur, $k); ?>><?php echo esc_html($label); ?></option>
+        <?php endforeach; ?>
+      </select>
+    </label>
+  <?php endif; ?>
   <?php if (vg_mod('show_random')) : ?><button class="rand" id="rand" type="button">🎲 <?php echo esc_html($random); ?></button><?php endif; ?>
   <?php if (vg_mod('show_search')) : ?>
     <form class="search" role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">

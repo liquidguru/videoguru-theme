@@ -23,20 +23,38 @@
   var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
   var whole = grid.dataset.all === '1';   // the whole wall is on this page, so we can filter in the browser
 
-  // Home page, "Random on every visit": shuffled here (not in PHP) because page caches would freeze a server-side shuffle.
-  // Crawlers and no-JS visitors still get the newest-first order.
-  if (grid.dataset.order === 'random' && document.body.classList.contains('home') && !location.search) {
-    var frag = document.createDocumentFragment();
-    for (var i = cards.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1)), t = cards[i];
-      cards[i] = cards[j]; cards[j] = t;
+  // Ordering is done here, in the browser, so page caches can't freeze a "random" order.
+  // Crawlers and no-JS visitors get the server's order (newest first unless the owner chose otherwise).
+  function arrange(mode) {
+    var list = cards.slice();
+    if (mode === 'random') {
+      for (var i = list.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1)), t = list[i];
+        list[i] = list[j]; list[j] = t;
+      }
+    } else if (mode === 'oldest') list.sort(function (a, b) { return a.dataset.date - b.dataset.date; });
+    else if (mode === 'title_asc' || mode === 'title_desc') {
+      // Sort by the first letter or number, so a title starting with a quotation mark files under its first word.
+      var key = function (c) { return c.dataset.title.replace(/^[^\p{L}\p{N}]+/u, ''); };
+      var dir = mode === 'title_asc' ? 1 : -1;
+      list.sort(function (a, b) { return dir * key(a).localeCompare(key(b), undefined, { numeric: true, sensitivity: 'base' }); });
     }
-    cards.forEach(function (c, n) {
+    else list.sort(function (a, b) { return b.dataset.date - a.dataset.date; });
+    var frag = document.createDocumentFragment();
+    list.forEach(function (c, n) {
       var im = c.querySelector('img');
       if (im) { im.loading = n < 4 ? 'eager' : 'lazy'; im.setAttribute('fetchpriority', n < 4 ? 'high' : 'auto'); }
       frag.appendChild(c);
     });
     grid.appendChild(frag);
+  }
+  if (grid.dataset.order === 'random' && document.body.classList.contains('home') && !location.search) arrange('random');
+
+  // Visitor's Sort menu (home page, whole wall on one page).
+  var sort = document.getElementById('sort');
+  if (sort) {
+    sort.hidden = false;
+    sort.addEventListener('change', function () { arrange(sort.value); window.scrollTo({ top: 0 }); });
   }
 
   var chips = document.getElementById('chips');

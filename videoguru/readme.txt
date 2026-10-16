@@ -3,7 +3,7 @@ Contributors: liquidguru
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: blog, entertainment, grid-layout, custom-colors, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, accessibility-ready
@@ -19,7 +19,8 @@ VideoGuru turns your posts into a contact sheet of large video thumbnails: filte
 * Filter chips come from your top-level categories, with counts. Search matches titles, categories and tags.
 * Muted, looping hover previews for Vimeo and YouTube (mouse only; off for touch, reduced motion and Data Saver).
 * Six colour themes (Midnight, Deep ocean, Charcoal, Forest, Plum, Paper) or your own two colours. Logo and tagline from Site Identity.
-* Choose thumbnail size, newest/oldest/random order on the home page, intro text, footer text and social links.
+* A Sort menu for visitors (Newest, Oldest, A–Z, Z–A, Random), or set a fixed home page order yourself.
+* Choose thumbnail size, newest/oldest/A–Z/Z–A/random order on the home page, intro text, footer text and social links.
 * Import from a channel: Appearance → Import videos turns pasted links, a YouTube channel or playlist, or a Vimeo channel, group, showcase, folder or account into one post per video (existing videos are skipped).
 * An Analytics box in the Customizer for a Google Analytics, Plausible, Cloudflare or Matomo snippet.
 * Light and quick: no jQuery, one small script, self-hosted font.
@@ -56,6 +57,11 @@ VideoGuru, (C) 2026 Kaj Maney, is distributed under the terms of the GNU GPL v2 
 Open Sans, (C) Steve Matteson / Google, is licensed under the SIL Open Font License 1.1 (https://openfontlicense.org).
 
 == Changelog ==
+
+= 0.3.0 =
+* New: a Sort menu on the home page so visitors can choose Newest, Oldest, A–Z, Z–A or Random (Customize → Video wall switches it off).
+* New: home page order can also be Title A–Z or Title Z–A.
+* Import videos: YouTube accepts a bare channel name or any one video address from the channel.
 
 = 0.2.0 =
 * New: Appearance → Import videos (pasted links, YouTube channel/playlist, Vimeo channel/group/showcase/folder/account).

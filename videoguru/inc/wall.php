@@ -11,7 +11,11 @@ add_action('pre_get_posts', function (WP_Query $q) {
     $q->set('posts_per_page', (int) vg_mod('per_page'));
     $q->set('ignore_sticky_posts', true);
     $q->set('vg_wall', (bool) vg_mod('only_videos'));
-    if ($q->is_home() && vg_mod('home_order') === 'oldest') { $q->set('orderby', 'date'); $q->set('order', 'ASC'); }
+    if ($q->is_home()) {
+        $order = vg_mod('home_order');
+        if ($order === 'oldest') { $q->set('orderby', 'date'); $q->set('order', 'ASC'); }
+        elseif ($order === 'title_asc' || $order === 'title_desc') { $q->set('orderby', 'title'); $q->set('order', $order === 'title_asc' ? 'ASC' : 'DESC'); }
+    }
 });
 
 // Queries flagged 'vg_wall' only return posts that contain a Vimeo or YouTube link (so text-only posts don't leave blank cards).
@@ -79,7 +83,8 @@ function vg_card($post = null): void {
     $terms = array_merge(wp_list_pluck(vg_cats($post->ID), 'name'), wp_get_post_tags($post->ID, ['fields' => 'names']));
     $search = strtolower(wp_strip_all_tags($title . ' ' . implode(' ', $terms)));
     $dur = vg_mod('show_duration') ? vg_fmt_duration(vg_duration($post)) : '';
-    $attrs = ' data-groups="' . esc_attr(implode(' ', array_keys($groups))) . '" data-search="' . esc_attr($search) . '"';
+    $attrs = ' data-groups="' . esc_attr(implode(' ', array_keys($groups))) . '" data-search="' . esc_attr($search) . '"'
+        . ' data-date="' . (int) get_post_time('U', true, $post) . '" data-title="' . esc_attr(strtolower(wp_strip_all_tags($title))) . '"';
     if ($v['provider'] === 'vimeo') $attrs .= ' data-vimeo="' . esc_attr($v['id']) . '"' . ($v['hash'] ? ' data-h="' . esc_attr($v['hash']) . '"' : '');
     if ($v['provider'] === 'youtube') $attrs .= ' data-youtube="' . esc_attr($v['id']) . '"';
     ?>

@@ -21,7 +21,7 @@ function vg_defaults(): array {
     return [
         'preset' => 'midnight', 'bg' => '#040316', 'accent' => '#5cc8e0',
         'card_size' => 'medium', 'per_page' => 200, 'home_order' => 'newest',
-        'only_videos' => true, 'hover_preview' => true, 'show_random' => true, 'show_search' => true, 'show_duration' => true, 'show_tagline' => true,
+        'only_videos' => true, 'show_sort' => true, 'hover_preview' => true, 'show_random' => true, 'show_search' => true, 'show_duration' => true, 'show_tagline' => true,
         'random_label' => '', 'search_placeholder' => '',
         'home_intro' => '', 'home_description' => '', 'footer_text' => '', 'show_rss' => true,
         'tracking_code' => '', 'skip_admin_tracking' => true,
@@ -118,8 +118,10 @@ add_action('customize_register', function (WP_Customize_Manager $wp) {
     $wp->add_section('vg_wall', ['title' => __('Video wall', 'videoguru'), 'priority' => 35]);
     $add('card_size', 'vg_wall', __('Thumbnail size', 'videoguru'), 'select', fn($v) => in_array($v, ['small', 'medium', 'large'], true) ? $v : 'medium',
         ['choices' => ['small' => __('Small', 'videoguru'), 'medium' => __('Medium', 'videoguru'), 'large' => __('Large', 'videoguru')]]);
-    $add('home_order', 'vg_wall', __('Order on the home page', 'videoguru'), 'select', fn($v) => in_array($v, ['newest', 'oldest', 'random'], true) ? $v : 'newest',
-        ['choices' => ['newest' => __('Newest first', 'videoguru'), 'oldest' => __('Oldest first', 'videoguru'), 'random' => __('Random on every visit', 'videoguru')]]);
+    $add('home_order', 'vg_wall', __('Order on the home page', 'videoguru'), 'select', fn($v) => in_array($v, ['newest', 'oldest', 'title_asc', 'title_desc', 'random'], true) ? $v : 'newest',
+        ['choices' => ['newest' => __('Newest first', 'videoguru'), 'oldest' => __('Oldest first', 'videoguru'), 'title_asc' => __('Title A–Z', 'videoguru'),
+            'title_desc' => __('Title Z–A', 'videoguru'), 'random' => __('Random on every visit', 'videoguru')]]);
+    $add('show_sort', 'vg_wall', __('Show a Sort menu so visitors can reorder the wall', 'videoguru'), 'checkbox', $bool);
     $add('per_page', 'vg_wall', __('Videos per page', 'videoguru'), 'number', fn($v) => max(12, min(1000, (int) $v)), ['input_attrs' => ['min' => 12, 'max' => 1000],
         'description' => __('Up to this many videos load on one screen, with instant filtering and search. More than this and the wall pages, and search goes to the server.', 'videoguru')]);
     $add('only_videos', 'vg_wall', __('Only list posts that contain a Vimeo or YouTube link', 'videoguru'), 'checkbox', $bool);
