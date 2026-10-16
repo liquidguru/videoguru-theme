@@ -37,6 +37,7 @@ Requires WordPress 6.0+ and PHP 7.4+.
 | `tools/package.py` | builds `dist/videoguru.zip` (full) and `dist/videoguru-directory.zip` (WordPress.org edition); `python tools/package.py full` or `directory` for one |
 | `tools/check_directory.py` | unpacks the directory zip and runs PHP_CodeSniffer (WordPress standards, theme text domain/prefix rules, PHP 7.4+ compatibility), reporting what the theme review cares about; needs the one-off Composer install in `_test/phpcs` |
 | `editions/directory/readme.txt` | the WordPress.org edition's `readme.txt` (privacy section, resources, its own changelog); `package.py` swaps it in |
+| `plugin/videoguru-companion/` | the **VideoGuru Companion** plugin (see below): `videoguru-companion.php`, `includes/` (`importer.php` library, `posters.php`, `admin.php` Tools page, `helpers.php`), `assets/admin.js`, `uninstall.php`, `readme.txt` |
 | `tools/make_screenshot.py` | regenerates `videoguru/screenshot.jpg` from a folder of posters |
 | `tools/wpt.sh` | WP-CLI against the local test site |
 | `_test/` | git-ignored local test site (WordPress copy on `php -S` at http://localhost:7430, seeded by `_test/seed.php`) |
@@ -56,6 +57,17 @@ Requires WordPress 6.0+ and PHP 7.4+.
 Both are built from the same source: the full edition's extra files (`inc/posters.php`, `inc/seo.php`, `inc/analytics.php`, `inc/importer.php`) are simply left out of the directory zip, and the core falls back gracefully (`videoguru_is_full()` in `functions.php`; the extras plug in through filters such as `videoguru_poster_url` and `videoguru_duration`).
 
 **Submitting to WordPress.org** (needs a WordPress.org account; the `Contributors:` line in `editions/directory/readme.txt` must be that username): run `python tools/package.py directory` and `python tools/check_directory.py` (expect 0 findings), then upload `dist/videoguru-directory.zip` at https://wordpress.org/themes/upload/. The review queue can take weeks. The Theme Check plugin (https://wordpress.org/plugins/theme-check/) reports no required items or warnings for this build.
+
+## Companion plugin (VideoGuru Companion)
+
+The WordPress.org theme edition can't include an importer or fetch remote data, so those live in a separate plugin, `plugin/videoguru-companion/` (build: `python tools/package.py plugin` → `dist/videoguru-companion.zip`). It works with any theme; the VideoGuru theme reads the lengths it saves.
+
+- **Tools → VideoGuru Companion → Paste links / YouTube / Vimeo:** the same importer as the full edition (links, YouTube channel/@handle/playlist/any video address, Vimeo channel/group/showcase/folder/account), review list, category, published or draft.
+- **Posters and lengths:** saves each video's poster into the Media Library as the post's **featured image** (Vimeo via oEmbed; YouTube `maxresdefault`, falling back to `hqdefault` with the black bars cropped off) and its **length** (Vimeo via oEmbed; YouTube needs the API key). Length is stored in post meta `_videoguru_duration` and in an option map the theme reads through its `videoguru_duration` filter. A "Fetch posters and lengths now" button catches up on existing posts.
+- **Consent:** nothing contacts Vimeo or YouTube on its own until the site owner ticks the box on the Posters tab (WordPress.org plugin guideline 7). Importing and the Fetch button are explicit actions. With the box ticked, saving or importing a post queues a one-off WP-Cron job per post.
+- **Switches itself off** when the full edition of the theme is active (`videoguru_is_full()`), since the theme already does all this. Uninstall removes its options, keys, tokens and markers but keeps imported posts, featured images and lengths.
+- **Checks:** `python tools/check_directory.py --plugin` (PHP_CodeSniffer, WordPress standards: 0 findings) and the official **Plugin Check** plugin (`wp plugin check videoguru-companion`: no errors). Plugin prefix `vgcompanion_`, text domain `videoguru-companion`.
+- Not included on purpose: SEO and analytics (use Yoast/Rank Math/Site Kit).
 
 ## Notes
 

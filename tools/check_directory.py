@@ -4,7 +4,7 @@ PHP_CodeSniffer with the WordPress coding standards, the theme text domain / pre
 One-off setup (Local's bundled Composer; installs into _test/phpcs, which is git-ignored):
   see _test/phpcs/composer.json (wp-coding-standards/wpcs, phpcompatibility-wp, dealerdirect installer)
 
-Usage: python tools/check_directory.py [--full] [--details]   (--full: check the full edition instead; --details: list each finding)
+Usage: python tools/check_directory.py [--full | --plugin] [--details]   (--full: the full theme edition; --plugin: the companion plugin; --details: list each finding)
 """
 import os
 import shutil
@@ -16,13 +16,15 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PHP = r'C:\Users\liqui\AppData\Roaming\Local\lightning-services\php-8.2.29+0\bin\win64\php.exe'
 PHPCS = os.path.join(HERE, '_test', 'phpcs', 'vendor', 'squizlabs', 'php_codesniffer', 'bin', 'phpcs')
 full = '--full' in sys.argv
-zip_path = os.path.join(HERE, 'dist', 'videoguru.zip' if full else 'videoguru-directory.zip')
-out = os.path.join(HERE, '_test', 'check_full' if full else 'check_directory')
+plugin = '--plugin' in sys.argv
+zip_name = 'videoguru-companion.zip' if plugin else ('videoguru.zip' if full else 'videoguru-directory.zip')
+zip_path = os.path.join(HERE, 'dist', zip_name)
+out = os.path.join(HERE, '_test', 'check_plugin' if plugin else ('check_full' if full else 'check_directory'))
 
 shutil.rmtree(out, ignore_errors=True)
 with zipfile.ZipFile(zip_path) as z:
     z.extractall(out)
-theme = os.path.join(out, 'videoguru')
+theme = os.path.join(out, 'videoguru-companion' if plugin else 'videoguru')
 
 rc = 0
 print('PHP lint (7.4 syntax only checked by the compatibility sniff below)...')
@@ -35,7 +37,7 @@ for d, _, files in os.walk(theme):
                 rc = 1
 
 args = [PHP, '-d', 'memory_limit=1G', PHPCS, '--standard=WordPress,PHPCompatibilityWP', '--extensions=php', '--runtime-set', 'testVersion', '7.4-',
-        '--runtime-set', 'minimum_wp_version', '6.3', '--runtime-set', 'text_domain', 'videoguru', '--runtime-set', 'prefixes', 'videoguru,Videoguru,VIDEOGURU',
+        '--runtime-set', 'minimum_wp_version', '6.3', '--runtime-set', 'text_domain', 'videoguru-companion' if plugin else 'videoguru', '--runtime-set', 'prefixes', 'vgcompanion,VGCOMPANION' if plugin else 'videoguru,Videoguru,VIDEOGURU',
         '--report=json', theme]
 r = subprocess.run(args, capture_output=True, text=True)
 

@@ -2,8 +2,9 @@
 
   dist/videoguru.zip            full edition: everything (GitHub, videoguru.liquid.guru)
   dist/videoguru-directory.zip  WordPress.org edition: no importer, no Vimeo/SEO/analytics extras, no remote requests
+  dist/videoguru-companion.zip  the companion plugin (importer, posters as featured images, lengths)
 
-Usage: python tools/package.py [full|directory]    (no argument builds both)
+Usage: python tools/package.py [full|directory|plugin]    (no argument builds all three)
 """
 import os
 import sys
@@ -37,7 +38,20 @@ def build(edition):
         print(out, os.path.getsize(out) // 1024, 'KB,', len(zf.namelist()), 'files')
 
 
+def build_plugin():
+    src = os.path.join(HERE, 'plugin', 'videoguru-companion')
+    os.makedirs(DIST, exist_ok=True)
+    out = os.path.join(DIST, 'videoguru-companion.zip')
+    with zipfile.ZipFile(out, 'w', zipfile.ZIP_DEFLATED) as zf:
+        for d, _, files in os.walk(src):
+            for f in sorted(files):
+                p = os.path.join(d, f)
+                zf.write(p, 'videoguru-companion/' + os.path.relpath(p, src).replace(os.sep, '/'))
+    with zipfile.ZipFile(out) as zf:
+        print(out, os.path.getsize(out) // 1024, 'KB,', len(zf.namelist()), 'files')
+
+
 if __name__ == '__main__':
-    which = sys.argv[1:] or ['full', 'directory']
+    which = sys.argv[1:] or ['full', 'directory', 'plugin']
     for e in which:
-        build(e)
+        build_plugin() if e == 'plugin' else build(e)
