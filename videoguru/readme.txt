@@ -3,7 +3,7 @@ Contributors: liquidguru
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.5.0
+Stable tag: 0.5.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Tags: blog, entertainment, grid-layout, custom-colors, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready
@@ -58,6 +58,9 @@ VideoGuru, (C) 2026 Kaj Maney, is distributed under the terms of the GNU GPL v2 
 Open Sans, (C) Steve Matteson / Google, is licensed under the SIL Open Font License 1.1 (https://openfontlicense.org).
 
 == Changelog ==
+
+= 0.5.1 =
+* Fix: the bundled Open Sans font is now declared through the Enqueue API instead of inside the stylesheet (theme review request).
 
 = 0.5.0 =
 * New: choose the shape of the video thumbnails (Customize → Video wall → Thumbnail shape): rounded corners, very rounded, square corners, cut corners, square tile, circle, oval or wavy edges. Hover previews fill every shape.

@@ -39,6 +39,9 @@ add_action('after_setup_theme', function () {
 
 add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('videoguru-main', get_theme_file_uri('assets/css/main.css'), [], VIDEOGURU_VERSION . '.' . filemtime(get_theme_file_path('assets/css/main.css')));
+    // The bundled Open Sans files, declared through the Enqueue API rather than in the stylesheet itself.
+    $font = static fn(string $file, string $style): string => '@font-face{font-family:"Open Sans";font-style:' . $style . ';font-weight:300 800;font-display:swap;src:url(' . esc_url(get_theme_file_uri('assets/fonts/' . $file)) . ') format("woff2")}';
+    wp_add_inline_style('videoguru-main', $font('open-sans-normal.woff2', 'normal') . $font('open-sans-italic.woff2', 'italic'));
     wp_enqueue_script('videoguru-main', get_theme_file_uri('assets/js/main.js'), [], VIDEOGURU_VERSION . '.' . filemtime(get_theme_file_path('assets/js/main.js')), ['strategy' => 'defer', 'in_footer' => true]);
     if (is_singular() && comments_open() && get_option('thread_comments')) wp_enqueue_script('comment-reply');
 });
